@@ -1,6 +1,6 @@
 """
 Main Page UI - TTS Subtitling Studio
-Fixed for Flet 0.84+
+Compatible with Flet 0.84.0
 """
 
 import flet as ft
@@ -16,8 +16,6 @@ class AppState:
         self.audio_engine = None
         self.target_lang = "vi"
         self.theme = "dark"
-        self.undo_stack = []
-        self.redo_stack = []
 
 
 class MainPage:
@@ -35,8 +33,6 @@ class MainPage:
         self.page.padding = 0
         self.page.window_width = 1400
         self.page.window_height = 900
-        self.page.window_min_width = 1200
-        self.page.window_min_height = 700
 
     def build(self):
         """Build the main UI."""
@@ -53,186 +49,191 @@ class MainPage:
                 [
                     ft.Row(
                         [
-                            ft.Icon(icon="play_circle_filled", size=32, color="#B39DDB"),
-                            ft.Text(
-                                "TTS Subtitling Studio",
-                                size=22,
-                                weight=ft.FontWeight.BOLD,
-                                color="#FFFFFF",
-                            ),
+                            ft.Icon(icon="PLAY_CIRCLE_FILLED", size=32, color="#B39DDB"),
+                            ft.Text("TTS Subtitling Studio", size=22, weight=ft.FontWeight.BOLD),
                         ]
                     ),
                     ft.Row(
                         [
-                            ft.IconButton(
-                                icon="dark_mode",
-                                tooltip="Toggle Theme",
-                                on_click=self._toggle_theme,
-                            ),
-                            ft.IconButton(
-                                icon="settings",
-                                tooltip="Settings",
-                                on_click=self._show_settings,
-                            ),
-                            ft.IconButton(
-                                icon="info_outlined",
-                                tooltip="About",
-                                on_click=self._show_about,
-                            ),
-                        ],
-                        alignment=ft.MainAxisAlignment.END,
+                            ft.IconButton(icon="DARK_MODE", on_click=self._toggle_theme),
+                            ft.IconButton(icon="INFO_OUTLINED", on_click=self._show_about),
+                        ]
                     ),
                 ],
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                expand=True,
             ),
-            padding=ft.padding.all(15),
+            padding=15,
             bgcolor="#1C1B1F",
-            border=ft.border.only(bottom=ft.border.BorderSide(1, "#49454F")),
         )
 
     def _build_body(self):
         """Build main body content."""
-        from app.ui.drop_zone import DropZone
-        from app.ui.model_panel import ModelPanel
-        from app.ui.subtitle_editor import SubtitleEditor
-        from app.ui.audio_controls import AudioControls
-        from app.ui.waveform_display import WaveformDisplay
-
         self.left_panel = ft.Container(
-            content=ft.Column(
-                [
-                    DropZone(self),
-                    ModelPanel(self),
-                ],
-                spacing=20,
-            ),
+            content=ft.Column(scroll=ft.ScrollMode.AUTO, spacing=15),
             width=400,
-            padding=ft.padding.all(15),
+            padding=15,
         )
+        self._build_left_panel()
 
         self.center_panel = ft.Container(
-            content=ft.Column(
-                [
-                    ft.Container(
-                        content=ft.Text("Preview", size=16, weight=ft.FontWeight.BOLD),
-                        padding=ft.padding.only(bottom=5),
-                    ),
-                    WaveformDisplay(self),
-                    ft.Container(height=20),
-                    SubtitleEditor(self),
-                ],
-                spacing=10,
-            ),
+            content=ft.Column(spacing=10),
             expand=True,
-            padding=ft.padding.all(15),
+            padding=15,
         )
+        self._build_center_panel()
 
         self.body = ft.Container(
-            content=ft.Row(
-                [self.left_panel, ft.VerticalDivider(), self.center_panel],
-                spacing=0,
-                expand=True,
-            ),
+            content=ft.Row([self.left_panel, ft.VerticalDivider(), self.center_panel]),
             expand=True,
         )
 
+    def _build_left_panel(self):
+        """Build left panel with model and file selection."""
+        self.model_btn = ft.ElevatedButton(
+            content="Select TTS Model",
+            icon="FOLDER_OPEN",
+            on_click=self._select_model,
+        )
+        self.model_label = ft.Text("Model: Not loaded", size=12, color="#9E9E9E")
+
+        self.srt_btn = ft.ElevatedButton(
+            content="Load SRT File",
+            icon="UPLOAD_FILE",
+            on_click=self._select_srt,
+        )
+        self.srt_label = ft.Text("No SRT file loaded", size=12, color="#9E9E9E")
+
+        self.lang_dropdown = ft.Dropdown(
+            label="Target Language",
+            value="vi",
+            options=[
+                ft.dropdown.Option("vi", "Vietnamese"),
+                ft.dropdown.Option("en", "English"),
+                ft.dropdown.Option("ja", "Japanese"),
+                ft.dropdown.Option("ko", "Korean"),
+                ft.dropdown.Option("zh", "Chinese"),
+            ],
+            width=300,
+        )
+
+        self.translate_btn = ft.ElevatedButton(
+            content="Translate with Gemini",
+            icon="TRANSLATE",
+            on_click=self._translate,
+        )
+
+        self.left_panel.content.controls.extend([
+            ft.Text("Load Model", size=16, weight=ft.FontWeight.BOLD),
+            self.model_btn,
+            self.model_label,
+            ft.Divider(),
+            ft.Text("Load Subtitle", size=16, weight=ft.FontWeight.BOLD),
+            self.srt_btn,
+            self.srt_label,
+            ft.Divider(),
+            self.lang_dropdown,
+            ft.Container(height=10),
+            self.translate_btn,
+        ])
+
+    def _build_center_panel(self):
+        """Build center panel with subtitle list and controls."""
+        self.subtitle_list = ft.ListView(expand=True, spacing=5)
+        self.play_btn = ft.IconButton(icon="PLAY_ARROW", icon_size=32, on_click=self._play)
+        self.stop_btn = ft.IconButton(icon="STOP", icon_size=32, on_click=self._stop)
+
+        self.center_panel.content.controls.extend([
+            ft.Text("Subtitles", size=16, weight=ft.FontWeight.BOLD),
+            ft.Container(content=self.subtitle_list, border=ft.border.all(1, "#49454F"), expand=True),
+            ft.Row([self.play_btn, self.stop_btn]),
+        ])
+
     def _build_footer(self):
-        """Build footer with audio controls."""
-        from app.ui.audio_controls import AudioControls
-
-        self.audio_controls = AudioControls(self)
-
-        self.progress_bar = ft.ProgressBar(
-            value=0,
-            bar_height=8,
+        """Build footer with generate button."""
+        self.generate_btn = ft.ElevatedButton(
+            content="Generate Audio",
+            icon="PLAY_CIRCLE_FILLED",
+            on_click=self._generate,
             expand=True,
-            visible=False,
+        )
+        self.export_btn = ft.ElevatedButton(
+            content="Export",
+            icon="SAVE",
+            on_click=self._export,
+            expand=True,
         )
 
         self.footer = ft.Container(
-            content=ft.Column(
-                [
-                    self.audio_controls.build(),
-                    ft.Container(height=10),
-                    ft.Row(
-                        [
-                            ft.ElevatedButton(
-                                content=ft.Row(
-                                    [ft.Icon(icon="play_arrow", size=18), ft.Text("Generate Audio")],
-                                    spacing=5,
-                                ),
-                                on_click=self._on_generate,
-                                expand=True,
-                            ),
-                            ft.ElevatedButton(
-                                content=ft.Row(
-                                    [ft.Icon(icon="save", size=18), ft.Text("Export")],
-                                    spacing=5,
-                                ),
-                                on_click=self._on_export,
-                                expand=True,
-                            ),
-                        ],
-                        spacing=10,
-                    ),
-                    self.progress_bar,
-                ],
-                spacing=10,
-            ),
-            padding=ft.padding.all(15),
+            content=ft.Row([self.generate_btn, self.export_btn], spacing=10),
+            padding=15,
             bgcolor="#1C1B1F",
-            border=ft.border.only(top=ft.border.BorderSide(1, "#49454F")),
         )
+
+    def _select_model(self, e):
+        """Select TTS model."""
+        def on_result(e: ft.FilePickerResultException):
+            if e.path:
+                self.model_label.value = f"Model: {e.path}"
+                self.page.update()
+        picker = ft.FilePicker(on_result=on_result)
+        self.page.overlay.append(picker)
+        picker.get_directory()
+
+    def _select_srt(self, e):
+        """Select SRT file."""
+        def on_result(e: ft.FilePickerResultException):
+            if e.files:
+                self.srt_label.value = e.files[0].name
+                self.state.subtitle_file = e.files[0].path
+                self._update_subtitle_list()
+                self.page.update()
+        picker = ft.FilePicker(on_result=on_result)
+        self.page.overlay.append(picker)
+        picker.pick_files(allowed_extensions=["srt"])
+
+    def _update_subtitle_list(self):
+        """Update subtitle list display."""
+        self.subtitle_list.controls.clear()
+        if self.state.subtitle_file:
+            self.subtitle_list.controls.append(
+                ft.ListTile(title=ft.Text(self.state.subtitle_file))
+            )
+        else:
+            self.subtitle_list.controls.append(
+                ft.ListTile(title=ft.Text("No subtitles loaded"))
+            )
+
+    def _translate(self, e):
+        """Translate subtitles."""
+        self.page.show_snack_bar(ft.SnackBar(content=ft.Text("Translation started...")))
+
+    def _play(self, e):
+        """Play audio."""
+        pass
+
+    def _stop(self, e):
+        """Stop audio."""
+        pass
+
+    def _generate(self, e):
+        """Generate audio."""
+        self.page.show_snack_bar(ft.SnackBar(content=ft.Text("Generating audio...")))
+
+    def _export(self, e):
+        """Export audio."""
+        self.page.show_snack_bar(ft.SnackBar(content=ft.Text("Exporting...")))
 
     def _toggle_theme(self, e):
-        """Toggle dark/light theme."""
-        self.page.theme_mode = (
-            ft.ThemeMode.LIGHT
-            if self.page.theme_mode == ft.ThemeMode.DARK
-            else ft.ThemeMode.DARK
-        )
-        self.state.theme = "light" if self.page.theme_mode == ft.ThemeMode.LIGHT else "dark"
-        self.page.update()
-
-    def _show_settings(self, e):
-        """Show settings dialog."""
-        dialog = ft.AlertDialog(
-            title=ft.Text("Settings"),
-            content=ft.Column(
-                [
-                    ft.TextField(label="Gemini API Key", hint_text="Enter your API key", password=True),
-                    ft.TextField(label="Output Directory", hint_text="/path/to/output"),
-                ],
-                tight=True,
-            ),
-            actions=[
-                ft.TextButton("Cancel", on_click=lambda e: self._close_dialog()),
-                ft.TextButton("Save", on_click=lambda e: self._close_dialog()),
-            ],
-        )
-        self.page.dialog = dialog
-        dialog.open = True
+        """Toggle theme."""
+        self.page.theme_mode = ft.ThemeMode.LIGHT if self.page.theme_mode == ft.ThemeMode.DARK else ft.ThemeMode.DARK
         self.page.update()
 
     def _show_about(self, e):
         """Show about dialog."""
         dialog = ft.AlertDialog(
-            title=ft.Text("About TTS Subtitling Studio"),
-            content=ft.Column(
-                [
-                    ft.Text("Version 1.0.0"),
-                    ft.Text("Desktop app for SRT to Audio"),
-                    ft.Container(height=10),
-                    ft.Text("Features:", weight=ft.FontWeight.BOLD),
-                    ft.Text("Drag & drop SRT files"),
-                    ft.Text("Gemini translation"),
-                    ft.Text("ONNX TTS model support"),
-                    ft.Text("Live subtitle editing"),
-                ],
-                tight=True,
-            ),
-            actions=[ft.TextButton("Close", on_click=lambda e: self._close_dialog())],
+            title=ft.Text("About"),
+            content=ft.Text("TTS Subtitling Studio v1.0\nSRT to Audio with Gemini translation"),
+            actions=[ft.TextButton(content="OK", on_click=lambda e: self._close_dialog())],
         )
         self.page.dialog = dialog
         dialog.open = True
@@ -240,29 +241,5 @@ class MainPage:
 
     def _close_dialog(self):
         """Close dialog."""
-        if self.page.dialog:
-            self.page.dialog.open = False
-        self.page.update()
-
-    def _on_generate(self, e):
-        """Generate audio."""
-        if not self.state.subtitle_file:
-            self._show_error("No subtitle file loaded")
-            return
-        self._show_info("Audio generation started...")
-
-    def _on_export(self, e):
-        """Export audio."""
-        if not self.state.subtitle_file:
-            self._show_error("No audio generated")
-            return
-        self._show_info("Select output path to save...")
-
-    def _show_error(self, message: str):
-        """Show error snackbar."""
-        self.page.show_snack_bar(ft.SnackBar(content=ft.Text(message), bgcolor="#F44336"))
-
-    def _show_info(self, message: str):
-        """Show info snackbar."""
-        self.page.show_snack_bar(ft.SnackBar(content=ft.Text(message)))
+        self.page.dialog.open = False
         self.page.update()
