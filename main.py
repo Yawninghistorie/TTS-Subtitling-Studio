@@ -8,7 +8,6 @@ Entry Point
 
 import flet as ft
 from app.ui.main_page import MainPage
-import sys
 
 
 def main(page: ft.Page):
