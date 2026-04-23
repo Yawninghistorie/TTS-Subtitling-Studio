@@ -1,0 +1,28 @@
+# TTS Subtitling Studio - Build Configuration
+
+[build-system]
+requires = ["pyinstaller>=6.0.0", "setuptools>=68.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tts-subtitling-studio"
+version = "1.0.0"
+description = "Desktop app for SRT → Gemini Translate → ONNX TTS → Audio"
+authors = [{name = "TTS Studio Team"}]
+requires-python = ">=3.10"
+
+[tool.pyinstaller]
+name = "TTS_Subtitling_Studio"
+onefile = true
+console = false
+icon = "resources/icon.ico"
+add-data = [
+    "resources:resources"
+]
+hidden-imports = [
+    "flet",
+    "onnxruntime",
+    "google.genai",
+    "soundfile",
+    "pydub",
+]
