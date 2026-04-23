@@ -23,6 +23,7 @@ class DropZone(ft.Column):
     def _build(self):
         """Build drop zone UI."""
         # Model selector section
+        self.model_status_text = ft.Text("Model: Not loaded", size=12, color="#9E9E9E")
         self.model_section = ft.Container(
             content=ft.Column(
                 [
@@ -37,7 +38,7 @@ class DropZone(ft.Column):
                         expand=True,
                     ),
                     ft.Container(height=10),
-                    ft.Text("Model: Not loaded", size=12, color="#9E9E9E", id="model_status"),
+                    self.model_status_text,
                 ],
                 spacing=5,
             ),
@@ -148,10 +149,7 @@ class DropZone(ft.Column):
 
     def _update_model_status(self, model_name: str):
         """Update model status text."""
-        for control in self.model_section.content.controls:
-            if hasattr(control, 'id') and control.id == "model_status":
-                control.value = f"✅ Model: {model_name}"
-                break
+        self.model_status_text.value = f"✅ Model: {model_name}"
 
     def _on_drop_click(self, e):
         """Handle click to open file picker."""
