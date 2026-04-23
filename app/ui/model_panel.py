@@ -42,7 +42,7 @@ class ModelPanel(ft.Container):
 
         self.preview_btn = ft.ElevatedButton(
             content=ft.Row(
-                [ft.Icon(name="play_arrow", size=18), ft.Text("Preview")],
+                [ft.Icon(icon="play_arrow", size=18), ft.Text("Preview")],
                 spacing=5,
             ),
             on_click=self._on_preview,
@@ -59,7 +59,7 @@ class ModelPanel(ft.Container):
                     ft.Container(
                         content=ft.Column(
                             [
-                                ft.Row([ft.Icon(name="mic", size=16), self.model_name], spacing=10),
+                                ft.Row([ft.Icon(icon="mic", size=16), self.model_name], spacing=10),
                                 self.sample_rate,
                                 self.languages,
                                 self.speakers,

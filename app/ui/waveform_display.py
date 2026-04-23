@@ -48,7 +48,7 @@ class WaveformDisplay(ft.Container):
         self.waveform_placeholder = ft.Container(
             content=ft.Column(
                 [
-                    ft.Icon(name="graphic_eq", size=48, color="#673AB7"),
+                    ft.Icon(icon="graphic_eq", size=48, color="#673AB7"),
                     ft.Text("Waveform preview will appear here", size=14, color="#9E9E9E"),
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,

@@ -53,7 +53,7 @@ class MainPage:
                 [
                     ft.Row(
                         [
-                            ft.Icon(name="play_circle_filled", size=32, color="#B39DDB"),
+                            ft.Icon(icon="play_circle_filled", size=32, color="#B39DDB"),
                             ft.Text(
                                 "TTS Subtitling Studio",
                                 size=22,
@@ -159,7 +159,7 @@ class MainPage:
                         [
                             ft.ElevatedButton(
                                 content=ft.Row(
-                                    [ft.Icon("play_arrow", size=18), ft.Text("Generate Audio")],
+                                    [ft.Icon(icon="play_arrow", size=18), ft.Text("Generate Audio")],
                                     spacing=5,
                                 ),
                                 on_click=self._on_generate,
@@ -167,7 +167,7 @@ class MainPage:
                             ),
                             ft.ElevatedButton(
                                 content=ft.Row(
-                                    [ft.Icon("save", size=18), ft.Text("Export")],
+                                    [ft.Icon(icon="save", size=18), ft.Text("Export")],
                                     spacing=5,
                                 ),
                                 on_click=self._on_export,

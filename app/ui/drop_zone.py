@@ -30,7 +30,7 @@ class DropZone(ft.Column):
                     ft.Container(height=5),
                     ft.ElevatedButton(
                         content=ft.Row(
-                            [ft.Icon(name="folder_open", size=18), ft.Text("Select Model Folder")],
+                            [ft.Icon(icon="folder_open", size=18), ft.Text("Select Model Folder")],
                             spacing=10,
                         ),
                         on_click=self._select_model_folder,
@@ -51,7 +51,7 @@ class DropZone(ft.Column):
         self.drop_target = ft.Container(
             content=ft.Column(
                 [
-                    ft.Icon(name="upload_file", size=48, color="#B39DDB"),
+                    ft.Icon(icon="upload_file", size=48, color="#B39DDB"),
                     ft.Text("📄 Drop SRT files here", size=16, weight=ft.FontWeight.BOLD),
                     ft.Text("or click to browse", size=12, color="#9E9E9E"),
                 ],
@@ -90,7 +90,7 @@ class DropZone(ft.Column):
 
         self.translate_btn = ft.ElevatedButton(
             content=ft.Row(
-                [ft.Icon(name="translate", size=18), ft.Text("🔄 Translate with Gemini")],
+                [ft.Icon(icon="translate", size=18), ft.Text("🔄 Translate with Gemini")],
                 spacing=8,
             ),
             on_click=self._on_translate,
@@ -177,7 +177,7 @@ class DropZone(ft.Column):
         item = ft.ListTile(
             title=ft.Text(file_name, size=14),
             subtitle=ft.Text(file_path, size=10, color="#9E9E9E"),
-            leading=ft.Icon(name="text_snippet", color="#B39DDB"),
+            leading=ft.Icon(icon="text_snippet", color="#B39DDB"),
             trailing=ft.IconButton(
                 icon="close",
                 icon_size=16,
