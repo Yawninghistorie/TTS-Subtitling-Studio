@@ -3,6 +3,7 @@ Model Info Panel - Display TTS model information
 """
 
 import flet as ft
+from flet import colors, icons
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -42,7 +43,7 @@ class ModelPanel(ft.Container):
 
         self.preview_btn = ft.ElevatedButton(
             content=ft.Row(
-                [ft.Icon(ft.icons.PLAY_ARROW, size=18), ft.Text("Preview")],
+                [ft.Icon(icons.PLAY_ARROW, size=18), ft.Text("Preview")],
                 spacing=5,
             ),
             on_click=self._on_preview,
@@ -60,7 +61,7 @@ class ModelPanel(ft.Container):
                         content=ft.Column(
                             [
                                 ft.Row(
-                                    [ft.Icon(ft.icons.MIC, size=16), self.model_name],
+                                    [ft.Icon(icons.MIC, size=16), self.model_name],
                                     spacing=10,
                                 ),
                                 self.sample_rate,
@@ -70,7 +71,7 @@ class ModelPanel(ft.Container):
                             spacing=5,
                         ),
                         padding=ft.padding.all(10),
-                        border=ft.border.all(1, ft.colors.OUTLINE),
+                        border=ft.border.all(1, colors.OUTLINE),
                         border_radius=8,
                     ),
                     ft.Container(height=15),
@@ -83,9 +84,9 @@ class ModelPanel(ft.Container):
                 spacing=10,
             ),
             padding=ft.padding.all(15),
-            border=ft.border.all(1, ft.colors.OUTLINE_VARIANT),
+            border=ft.border.all(1, colors.OUTLINE_VARIANT),
             border_radius=12,
-            bgcolor=ft.colors.SURFACE_CONTAINER_HIGH,
+            bgcolor=colors.SURFACE_CONTAINER_HIGH,
         )
 
     def update_model_info(self):

@@ -3,6 +3,7 @@ Subtitle Editor - Live editing of subtitles
 """
 
 import flet as ft
+from flet import colors, icons
 from typing import TYPE_CHECKING, List, Dict, Optional
 from datetime import timedelta
 
@@ -32,49 +33,49 @@ class SubtitleEditor(ft.Container):
                 ft.DataColumn(ft.Text("Actions", size=12, weight=ft.FontWeight.BOLD)),
             ],
             rows=[],
-            heading_row_color=ft.colors.SURFACE_CONTAINER_HIGH,
-            border=ft.border.all(1, ft.colors.OUTLINE),
+            heading_row_color=colors.SURFACE_CONTAINER_HIGH,
+            border=ft.border.all(1, colors.OUTLINE),
             expand=True,
         )
 
         self.toolbar = ft.Row(
             [
                 ft.IconButton(
-                    icon=ft.icons.ADD,
+                    icon=icons.ADD,
                     tooltip="Insert Entry (Ctrl+N)",
                     on_click=self._insert_entry,
                 ),
                 ft.IconButton(
-                    icon=ft.icons.DELETE,
+                    icon=icons.DELETE,
                     tooltip="Delete Selected",
                     on_click=self._delete_selected,
                 ),
                 ft.Container(width=10),
                 ft.IconButton(
-                    icon=ft.icons.UNDO,
+                    icon=icons.UNDO,
                     tooltip="Undo (Ctrl+Z)",
                     on_click=self._undo,
                 ),
                 ft.IconButton(
-                    icon=ft.icons.REDO,
+                    icon=icons.REDO,
                     tooltip="Redo (Ctrl+Y)",
                     on_click=self._redo,
                 ),
                 ft.Container(width=10),
                 ft.IconButton(
-                    icon=ft.icons.SEARCH,
+                    icon=icons.SEARCH,
                     tooltip="Search (Ctrl+F)",
                     on_click=self._show_search,
                 ),
                 ft.Container(expand=True),
-                ft.Text("Entries: 0", size=12, color=ft.colors.GREY_400),
+                ft.Text("Entries: 0", size=12, color=colors.GREY_400),
             ],
             spacing=5,
         )
 
         self.search_field = ft.TextField(
             hint_text="Search text...",
-            prefix_icon=ft.icons.SEARCH,
+            prefix_icon=icons.SEARCH,
             visible=False,
             on_submit=self._on_search,
             expand=True,
@@ -93,7 +94,7 @@ class SubtitleEditor(ft.Container):
                         expand=True,
                         height=300,
                     ),
-                    border=ft.border.all(1, ft.colors.OUTLINE),
+                    border=ft.border.all(1, colors.OUTLINE),
                     border_radius=8,
                 ),
                 self.toolbar,
@@ -107,7 +108,7 @@ class SubtitleEditor(ft.Container):
         self.table.rows.clear()
 
         if not sub_file or not sub_file.entries:
-            self.toolbar.controls[-1] = ft.Text("Entries: 0", size=12, color=ft.colors.GREY_400)
+            self.toolbar.controls[-1] = ft.Text("Entries: 0", size=12, color=colors.GREY_400)
             self.app.page.update()
             return
 
@@ -123,14 +124,14 @@ class SubtitleEditor(ft.Container):
                         ft.Text(
                             self._format_time(entry.start_time),
                             size=11,
-                            color=ft.colors.CYAN_200,
+                            color=colors.CYAN_200,
                         )
                     ),
                     ft.DataCell(
                         ft.Text(
                             self._format_time(entry.end_time),
                             size=11,
-                            color=ft.colors.CYAN_200,
+                            color=colors.CYAN_200,
                         )
                     ),
                     ft.DataCell(
@@ -140,18 +141,18 @@ class SubtitleEditor(ft.Container):
                             max_lines=2,
                         )
                     ),
-                    ft.DataCell(ft.Text(dur_text, size=11, color=ft.colors.YELLOW_200)),
+                    ft.DataCell(ft.Text(dur_text, size=11, color=colors.YELLOW_200)),
                     ft.DataCell(
                         ft.Row(
                             [
                                 ft.IconButton(
-                                    icon=ft.icons.PLAY_ARROW,
+                                    icon=icons.PLAY_ARROW,
                                     icon_size=16,
                                     tooltip="Preview",
                                     on_click=lambda e, idx=entry.index: self._preview_entry(idx),
                                 ),
                                 ft.IconButton(
-                                    icon=ft.icons.EDIT,
+                                    icon=icons.EDIT,
                                     icon_size=16,
                                     tooltip="Edit",
                                     on_click=lambda e, idx=entry.index: self._edit_entry(idx),
@@ -167,7 +168,7 @@ class SubtitleEditor(ft.Container):
             self.table.rows.append(row)
 
         count = len(sub_file.entries)
-        self.toolbar.controls[-1] = ft.Text(f"Entries: {count}", size=12, color=ft.colors.GREY_400)
+        self.toolbar.controls[-1] = ft.Text(f"Entries: {count}", size=12, color=colors.GREY_400)
         self.app.page.update()
 
     @staticmethod
@@ -267,7 +268,7 @@ class SubtitleEditor(ft.Container):
         sub_file = self.app.state.subtitle_file
         if not sub_file:
             self.app.page.show_snack_bar(
-                ft.SnackBar(content=ft.Text("Load SRT file first"), bgcolor=ft.colors.WARNING)
+                ft.SnackBar(content=ft.Text("Load SRT file first"), bgcolor=colors.WARNING)
             )
             return
 
@@ -297,7 +298,7 @@ class SubtitleEditor(ft.Container):
         """Delete selected entry."""
         if self.selected_index is None:
             self.app.page.show_snack_bar(
-                ft.SnackBar(content=ft.Text("Select an entry first"), bgcolor=ft.colors.WARNING)
+                ft.SnackBar(content=ft.Text("Select an entry first"), bgcolor=colors.WARNING)
             )
             return
 

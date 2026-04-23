@@ -3,6 +3,7 @@ Audio Controls - Volume, speed, pitch adjustments
 """
 
 import flet as ft
+from flet import colors, icons
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -47,7 +48,7 @@ class AudioControls:
                                     spacing=2,
                                 ),
                                 padding=10,
-                                border=ft.border.all(1, ft.colors.OUTLINE),
+                                border=ft.border.all(1, colors.OUTLINE),
                                 border_radius=8,
                             ),
                             ft.Container(
@@ -67,7 +68,7 @@ class AudioControls:
                                     spacing=2,
                                 ),
                                 padding=10,
-                                border=ft.border.all(1, ft.colors.OUTLINE),
+                                border=ft.border.all(1, colors.OUTLINE),
                                 border_radius=8,
                             ),
                             ft.Container(
@@ -87,7 +88,7 @@ class AudioControls:
                                     spacing=2,
                                 ),
                                 padding=10,
-                                border=ft.border.all(1, ft.colors.OUTLINE),
+                                border=ft.border.all(1, colors.OUTLINE),
                                 border_radius=8,
                             ),
                             ft.Container(
@@ -107,7 +108,7 @@ class AudioControls:
                                     spacing=2,
                                 ),
                                 padding=10,
-                                border=ft.border.all(1, ft.colors.OUTLINE),
+                                border=ft.border.all(1, colors.OUTLINE),
                                 border_radius=8,
                             ),
                             ft.Container(
@@ -127,7 +128,7 @@ class AudioControls:
                                     spacing=2,
                                 ),
                                 padding=10,
-                                border=ft.border.all(1, ft.colors.OUTLINE),
+                                border=ft.border.all(1, colors.OUTLINE),
                                 border_radius=8,
                             ),
                         ],
@@ -160,9 +161,9 @@ class AudioControls:
                 spacing=15,
             ),
             padding=ft.padding.all(15),
-            border=ft.border.all(1, ft.colors.OUTLINE_VARIANT),
+            border=ft.border.all(1, colors.OUTLINE_VARIANT),
             border_radius=12,
-            bgcolor=ft.colors.SURFACE_CONTAINER_LOW,
+            bgcolor=colors.SURFACE_CONTAINER_LOW,
         )
 
     def _on_volume_change(self, e):

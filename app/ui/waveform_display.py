@@ -3,6 +3,7 @@ Waveform Display - Audio waveform visualization
 """
 
 import flet as ft
+from flet import colors, icons
 from typing import TYPE_CHECKING, List
 
 if TYPE_CHECKING:
@@ -27,7 +28,7 @@ class WaveformDisplay(ft.Container):
                     ft.Container(
                         width=800,
                         height=150,
-                        bgcolor=ft.colors.SURFACE_CONTAINER_HIGHEST,
+                        bgcolor=colors.SURFACE_CONTAINER_HIGHEST,
                         border_radius=8,
                     ),
                     # Waveform will be drawn here
@@ -35,14 +36,14 @@ class WaveformDisplay(ft.Container):
                         content=ft.Column(
                             [
                                 ft.Icon(
-                                    ft.icons.GRAPHIC_EQ,
+                                    icons.GRAPHIC_EQ,
                                     size=48,
-                                    color=ft.colors.DEEP_PURPLE.with_alpha(100),
+                                    color=colors.DEEP_PURPLE.with_alpha(100),
                                 ),
                                 ft.Text(
                                     "Waveform preview will appear here",
                                     size=14,
-                                    color=ft.colors.GREY_500,
+                                    color=colors.GREY_500,
                                 ),
                             ],
                             alignment=ft.MainAxisAlignment.CENTER,
@@ -58,20 +59,20 @@ class WaveformDisplay(ft.Container):
             ),
             width=800,
             height=150,
-            border=ft.border.all(1, ft.colors.OUTLINE),
+            border=ft.border.all(1, colors.OUTLINE),
             border_radius=8,
             clip_behavior=ft.ClipBehavior.HARD_EDGE,
         )
 
         self.play_btn = ft.IconButton(
-            icon=ft.icons.PLAY_ARROW,
+            icon=icons.PLAY_ARROW,
             icon_size=32,
             tooltip="Play Preview",
             on_click=self._on_play,
         )
 
         self.stop_btn = ft.IconButton(
-            icon=ft.icons.STOP,
+            icon=icons.STOP,
             icon_size=32,
             tooltip="Stop",
             on_click=self._on_stop,
@@ -101,9 +102,9 @@ class WaveformDisplay(ft.Container):
                 spacing=10,
             ),
             padding=ft.padding.all(10),
-            border=ft.border.all(1, ft.colors.OUTLINE_VARIANT),
+            border=ft.border.all(1, colors.OUTLINE_VARIANT),
             border_radius=12,
-            bgcolor=ft.colors.SURFACE_CONTAINER_LOW,
+            bgcolor=colors.SURFACE_CONTAINER_LOW,
         )
 
     def update_waveform(self, waveform: List[float]):
@@ -127,14 +128,14 @@ class WaveformDisplay(ft.Container):
                 ft.Container(
                     width=800,
                     height=150,
-                    bgcolor=ft.colors.SURFACE_CONTAINER_HIGHEST,
+                    bgcolor=colors.SURFACE_CONTAINER_HIGHEST,
                     border_radius=8,
                 ),
                 ft.Container(
                     content=ft.Text(
                         f"Waveform: {len(self.waveform_data)} samples",
                         size=14,
-                        color=ft.colors.GREEN_200,
+                        color=colors.GREEN_200,
                     ),
                     width=800,
                     height=150,
@@ -153,12 +154,12 @@ class WaveformDisplay(ft.Container):
             )
             return
 
-        self.play_btn.icon = ft.icons.PAUSE
+        self.play_btn.icon = icons.PAUSE
         self.app.page.update()
 
     def _on_stop(self, e):
         """Handle stop button."""
-        self.play_btn.icon = ft.icons.PLAY_ARROW
+        self.play_btn.icon = icons.PLAY_ARROW
         self.progress_slider.value = 0
         self.app.page.update()
 
