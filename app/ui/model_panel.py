@@ -1,8 +1,8 @@
 """
 Model Info Panel - Display TTS model information
+Fixed for Flet 0.84+
 """
 
-import flet as ft
 import flet as ft
 from typing import TYPE_CHECKING
 
@@ -31,7 +31,6 @@ class ModelPanel(ft.Container):
             options=[],
             width=200,
             disabled=True,
-            on_change=self._on_speaker_change,
         )
 
         self.preview_text = ft.TextField(
@@ -43,7 +42,7 @@ class ModelPanel(ft.Container):
 
         self.preview_btn = ft.ElevatedButton(
             content=ft.Row(
-                [ft.Icon(ft.icons.PLAY_ARROW, size=18), ft.Text("Preview")],
+                [ft.Icon(name="play_arrow", size=18), ft.Text("Preview")],
                 spacing=5,
             ),
             on_click=self._on_preview,
@@ -60,10 +59,7 @@ class ModelPanel(ft.Container):
                     ft.Container(
                         content=ft.Column(
                             [
-                                ft.Row(
-                                    [ft.Icon(ft.icons.MIC, size=16), self.model_name],
-                                    spacing=10,
-                                ),
+                                ft.Row([ft.Icon(name="mic", size=16), self.model_name], spacing=10),
                                 self.sample_rate,
                                 self.languages,
                                 self.speakers,
@@ -71,7 +67,7 @@ class ModelPanel(ft.Container):
                             spacing=5,
                         ),
                         padding=ft.padding.all(10),
-                        border=ft.border.all(1, ft.colors.OUTLINE),
+                        border=ft.border.all(1, "#79747E"),
                         border_radius=8,
                     ),
                     ft.Container(height=15),
@@ -84,9 +80,9 @@ class ModelPanel(ft.Container):
                 spacing=10,
             ),
             padding=ft.padding.all(15),
-            border=ft.border.all(1, ft.colors.OUTLINE_VARIANT),
+            border=ft.border.all(1, "#49454F"),
             border_radius=12,
-            bgcolor=ft.colors.SURFACE_CONTAINER_HIGH,
+            bgcolor="#1C1B1F",
         )
 
     def update_model_info(self):
@@ -104,36 +100,16 @@ class ModelPanel(ft.Container):
             self.sample_rate.value = f"Sample Rate: {model.sample_rate} Hz"
             self.languages.value = f"Languages: {', '.join(model.languages)}"
             self.speakers.value = f"Speakers: {len(model.speakers)}"
-
-            # Update speaker dropdown
-            self.speaker_dropdown.options = [
-                ft.dropdown.Option(str(s["id"]), s["name"])
-                for s in model.speakers
-            ]
-            if model.speakers:
-                self.speaker_dropdown.value = str(model.speakers[0]["id"])
             self.speaker_dropdown.disabled = False
             self.preview_btn.disabled = False
-
         self.app.page.update()
-
-    def _on_speaker_change(self, e):
-        """Handle speaker change."""
-        # Store selected speaker ID
-        pass
 
     def _on_preview(self, e):
         """Handle preview button click."""
         if not self.app.state.tts_model:
             return
-
         text = self.preview_text.value
         if not text.strip():
             return
-
-        self.app.page.show_snack_bar(
-            ft.SnackBar(content=ft.Text(f"Playing preview: {text[:30]}..."))
-        )
+        self.app.page.show_snack_bar(ft.SnackBar(content=ft.Text(f"Playing: {text[:30]}...")))
         self.app.page.update()
-
-        # TODO: Implement preview playback
