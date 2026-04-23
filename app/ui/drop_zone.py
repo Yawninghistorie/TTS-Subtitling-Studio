@@ -3,7 +3,7 @@ Drop Zone - Drag & drop file handling
 """
 
 import flet as ft
-from flet import colors, icons
+import flet as ft
 from typing import TYPE_CHECKING
 from pathlib import Path
 import os
@@ -25,18 +25,18 @@ class DropZone(ft.Column):
         self.drop_target = ft.Container(
             content=ft.Column(
                 [
-                    ft.Icon(icons.UPLOAD_FILE, size=48, color=colors.DEEP_PURPLE_200),
+                    ft.Icon(ft.icons.UPLOAD_FILE, size=48, color=ft.colors.DEEP_PURPLE_200),
                     ft.Text("Drop SRT files here", size=16, weight=ft.FontWeight.BOLD),
-                    ft.Text("or .onnx model files", size=12, color=colors.GREY_400),
+                    ft.Text("or .onnx model files", size=12, color=ft.colors.GREY_400),
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             ),
             width=350,
             height=180,
-            border=ft.border.all(2, colors.DEEP_PURPLE if True else colors.OUTLINE),
+            border=ft.border.all(2, ft.colors.DEEP_PURPLE if True else ft.colors.OUTLINE),
             border_radius=ft.border_radius.all(12),
-            bgcolor=colors.SURFACE_CONTAINER_HIGHEST,
+            bgcolor=ft.colors.SURFACE_CONTAINER_HIGHEST,
             on_click=self._on_drop_click,
         )
 
@@ -50,7 +50,7 @@ class DropZone(ft.Column):
             label="Model Path",
             hint_text="Select TTS model folder",
             read_only=True,
-            prefix_icon=icons.FOLDER_OPEN,
+            prefix_icon=ft.icons.FOLDER_OPEN,
             on_suffix_click=self._select_model_folder,
         )
 
@@ -72,7 +72,7 @@ class DropZone(ft.Column):
 
         self.translate_btn = ft.ElevatedButton(
             content=ft.Row(
-                [ft.Icon(icons.TRANSLATE, size=18), ft.Text("Translate")],
+                [ft.Icon(ft.icons.TRANSLATE, size=18), ft.Text("Translate")],
                 spacing=5,
             ),
             on_click=self._on_translate,
@@ -132,10 +132,10 @@ class DropZone(ft.Column):
 
         item = ft.ListTile(
             title=ft.Text(file_name, size=14),
-            subtitle=ft.Text(file_path, size=10, color=colors.GREY_400),
-            leading=ft.Icon(icons.SUBSCRIPT, color=colors.DEEP_PURPLE_200),
+            subtitle=ft.Text(file_path, size=10, color=ft.colors.GREY_400),
+            leading=ft.Icon(ft.icons.SUBSCRIPT, color=ft.colors.DEEP_PURPLE_200),
             trailing=ft.IconButton(
-                icon=icons.CLOSE,
+                icon=ft.icons.CLOSE,
                 icon_size=16,
                 on_click=lambda e, p=file_path: self._remove_srt_file(p),
             ),
@@ -153,14 +153,14 @@ class DropZone(ft.Column):
 
     def _on_drag_enter(self, e):
         """Handle drag enter."""
-        self.drop_target.border = ft.border.all(3, colors.DEEP_PURPLE_200)
-        self.drop_target.bgcolor = colors.DEEP_PURPLE.with_alpha(30)
+        self.drop_target.border = ft.border.all(3, ft.colors.DEEP_PURPLE_200)
+        self.drop_target.bgcolor = ft.colors.DEEP_PURPLE.with_alpha(30)
         self.app.page.update()
 
     def _on_drag_leave(self, e):
         """Handle drag leave."""
-        self.drop_target.border = ft.border.all(2, colors.OUTLINE)
-        self.drop_target.bgcolor = colors.SURFACE_CONTAINER_HIGHEST
+        self.drop_target.border = ft.border.all(2, ft.colors.OUTLINE)
+        self.drop_target.bgcolor = ft.colors.SURFACE_CONTAINER_HIGHEST
         self.app.page.update()
 
     def _on_drag_over(self, e):
@@ -169,8 +169,8 @@ class DropZone(ft.Column):
 
     def _on_file_drop(self, e: ft.DropEvent):
         """Handle file drop."""
-        self.drop_target.border = ft.border.all(2, colors.OUTLINE)
-        self.drop_target.bgcolor = colors.SURFACE_CONTAINER_HIGHEST
+        self.drop_target.border = ft.border.all(2, ft.colors.OUTLINE)
+        self.drop_target.bgcolor = ft.colors.SURFACE_CONTAINER_HIGHEST
 
         if e.files:
             for file_path in e.files:
@@ -204,7 +204,7 @@ class DropZone(ft.Column):
             self.app.page.show_snack_bar(
                 ft.SnackBar(
                     content=ft.Text("Failed to load model"),
-                    bgcolor=colors.ERROR,
+                    bgcolor=ft.colors.ERROR,
                 )
             )
 
@@ -227,7 +227,7 @@ class DropZone(ft.Column):
                 self.app.page.show_snack_bar(
                     ft.SnackBar(
                         content=ft.Text("No TTS models found in folder"),
-                        bgcolor=colors.WARNING,
+                        bgcolor=ft.colors.WARNING,
                     )
                 )
 
@@ -239,7 +239,7 @@ class DropZone(ft.Column):
             self.app.page.show_snack_bar(
                 ft.SnackBar(
                     content=ft.Text("No SRT file loaded"),
-                    bgcolor=colors.WARNING,
+                    bgcolor=ft.colors.WARNING,
                 )
             )
             return

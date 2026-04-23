@@ -3,7 +3,7 @@ Main Page UI - TTS Subtitling Studio
 """
 
 import flet as ft
-from flet import colors, icons
+import flet as ft
 import os
 from typing import List, Dict, Optional, Callable
 from app.ui.drop_zone import DropZone
@@ -53,7 +53,7 @@ class MainPage:
 
         # Load theme
         self.page.theme = ft.Theme(
-            color_scheme_seed=colors.DEEP_PURPLE,
+            color_scheme_seed=ft.colors.DEEP_PURPLE,
             brightness=ft.ThemeMode.DARK,
         )
 
@@ -73,29 +73,29 @@ class MainPage:
                 [
                     ft.Row(
                         [
-                            ft.Icon(icons.PLAY_CIRCLE_FILL, size=32, color=colors.DEEP_PURPLE_200),
+                            ft.Icon(ft.icons.PLAY_CIRCLE_FILL, size=32, color=ft.colors.DEEP_PURPLE_200),
                             ft.Text(
                                 "TTS Subtitling Studio",
                                 size=22,
                                 weight=ft.FontWeight.BOLD,
-                                color=colors.WHITE,
+                                color=ft.colors.WHITE,
                             ),
                         ]
                     ),
                     ft.Row(
                         [
                             ft.IconButton(
-                                icon=icons.DARK_MODE,
+                                icon=ft.icons.DARK_MODE,
                                 tooltip="Toggle Theme",
                                 on_click=self._toggle_theme,
                             ),
                             ft.IconButton(
-                                icon=icons.SETTINGS,
+                                icon=ft.icons.SETTINGS,
                                 tooltip="Settings",
                                 on_click=self._show_settings,
                             ),
                             ft.IconButton(
-                                icon=icons.INFO_OUTLINE,
+                                icon=ft.icons.INFO_OUTLINE,
                                 tooltip="About",
                                 on_click=self._show_about,
                             ),
@@ -107,8 +107,8 @@ class MainPage:
                 expand=True,
             ),
             padding=ft.padding.all(15),
-            bgcolor=colors.SURFACE_CONTAINER_HIGH,
-            border=ft.border.only(bottom=ft.border.BorderSide(1, colors.OUTLINE_VARIANT)),
+            bgcolor=ft.colors.SURFACE_CONTAINER_HIGH,
+            border=ft.border.only(bottom=ft.border.BorderSide(1, ft.colors.OUTLINE_VARIANT)),
         )
 
     def _build_body(self):
@@ -171,7 +171,7 @@ class MainPage:
                         [
                             ft.ElevatedButton(
                                 content=ft.Row(
-                                    [ft.Icon(icons.PLAY_ARROW, size=18), ft.Text("Generate Audio")],
+                                    [ft.Icon(ft.icons.PLAY_ARROW, size=18), ft.Text("Generate Audio")],
                                     spacing=5,
                                 ),
                                 on_click=self._on_generate,
@@ -179,7 +179,7 @@ class MainPage:
                             ),
                             ft.ElevatedButton(
                                 content=ft.Row(
-                                    [ft.Icon(icons.SAVE, size=18), ft.Text("Export")],
+                                    [ft.Icon(ft.icons.SAVE, size=18), ft.Text("Export")],
                                     spacing=5,
                                 ),
                                 on_click=self._on_export,
@@ -193,8 +193,8 @@ class MainPage:
                 spacing=10,
             ),
             padding=ft.padding.all(15),
-            bgcolor=colors.SURFACE_CONTAINER_HIGH,
-            border=ft.border.only(top=ft.border.BorderSide(1, colors.OUTLINE_VARIANT)),
+            bgcolor=ft.colors.SURFACE_CONTAINER_HIGH,
+            border=ft.border.only(top=ft.border.BorderSide(1, ft.colors.OUTLINE_VARIANT)),
         )
 
     def _toggle_theme(self, e):
@@ -302,7 +302,7 @@ class MainPage:
 
     def _show_error(self, message: str):
         """Show error snackbar."""
-        self.page.show_snack_bar(ft.SnackBar(content=ft.Text(message), bgcolor=colors.ERROR))
+        self.page.show_snack_bar(ft.SnackBar(content=ft.Text(message), bgcolor=ft.colors.ERROR))
 
     def _show_info(self, message: str):
         """Show info snackbar."""
